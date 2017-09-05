@@ -1,0 +1,175 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+
+<!--
+  `pagination-input` is a simple pagination control with an paper-input.
+
+### Example
+  
+        <pagination-input current-page="1" page-count="5"></pagination-input>
+        <pagination-input current-page="99" page-count="155"></pagination-input>
+        <pagination-input current-page="14" page-count="23"></pagination-input>
+
+### Styling
+
+Custom property | Description | Default
+----------------|-------------|---------
+`--pagination-input-text-color` | Color of text showing the selected page | `--primary-text-color`
+`--pagination-input-suffix-color` | Color of text showing the number of pages | `--secondary-text-color`
+`--pagination-input-input` | Mixin for the paper-input (selected page)  | `{}`
+`--pagination-input-input-suffix` | Mixin for the paper-input suffix (number of pages) | `{}`
+`--pagination-input-button` | Mixin for paper-icon-button | `{}`
+`--pagination-input-disabled-button` | Mixin for disabled paper-icon-button | `{}`
+
+@demo demo/index.html
+-->
+
+<dom-module id="pagination-input">
+  <template strip-whitespace>
+    <style>
+       :host {
+        @apply --layout-horizontal;
+      }
+
+      #input {
+        color: var(--pagination-input-text-color, var(--primary-text-color));
+        text-align: center;
+        margin-left: 4px;
+        margin-right: 4px;
+        @apply --pagination-input-input;
+      }
+
+      #suffix {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        color: var(--pagination-input-suffix-color, var(--secondary-text-color));
+        @apply --pagination-input-input-suffix;
+      }
+
+      paper-icon-button {
+        --iron-icon-fill-color: var(--pagination-input-icon-fill-color, var(--primary-text-color));
+        @apply --pagination-input-button;
+      }
+
+      paper-icon-button[disabled] {
+        opacity: 0.15;
+        @apply --pagination-input-disabled-button;
+      }
+    </style>
+
+    <paper-icon-button icon="icons:first-page" on-click="_onFirstPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage)]]"></paper-icon-button>
+    <paper-icon-button icon="icons:chevron-left" on-click="_onPreviousPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage)]]"></paper-icon-button>
+    <paper-input id="input" on-change="_onInputValueChange" no-label-float="true" auto-validate allowed-pattern="[0-9]">
+      <div id="suffix" slot="suffix">/[[pageCount]]</div>
+    </paper-input>
+    <paper-icon-button icon="icons:chevron-right" on-click="_onNextPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount)]]"></paper-icon-button>
+    <paper-icon-button icon="icons:last-page" on-click="_onLastPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount)]]"></paper-icon-button>
+
+  </template>
+
+  <script>
+    'use strict';
+    class KlmPagination extends Polymer.Element {
+      static get is() { return "pagination-input"; }
+      static get properties() {
+        return {
+          /**
+           * Current selected page
+           */
+          currentPage: {
+            type: Number,
+            notify: true
+          },
+
+          /**
+           * Number of pages
+           */
+          pageCount: Number
+        }
+      }
+
+      static get observers() {
+        return [
+          "_onPageCountChange(pageCount)",
+          "_onCurrentPageChange(currentPage)"
+        ];
+      }
+
+      _shouldDisablePreviousPageBtns(currentPage) {
+        return currentPage === 1;
+      }
+
+      _shouldDisableNextPageBtns(currentPage, pageCount) {
+        return currentPage === pageCount;
+      }
+
+      _onFirstPageBtnClick() {
+        this.currentPage = 1;
+      }
+
+      _onPreviousPageBtnClick() {
+        this.currentPage--;
+      }
+
+      _onNextPageBtnClick() {
+        this.currentPage++;
+      }
+
+      _onLastPageBtnClick() {
+        this.currentPage = this.pageCount;
+      }
+
+      _onInputValueChange() {
+        const inputValue = this.$.input.value;
+        if (inputValue < 1 || inputValue > this.pageCount) {
+          this.$.input.value = this.currentPage;
+        } else {
+          this.currentPage = inputValue;
+        }
+      }
+
+      _onCurrentPageChange(currentPage) {
+        this._validateParams(currentPage, this.pageCount);
+
+        if (currentPage < 1 || currentPage > this.pageCount) {
+          this.currentPage = 1;
+        } else {
+          this.$.input.value = currentPage;
+        }
+      }
+
+      _onPageCountChange(pageCount) {
+        this._validateParams(this.currentPage, pageCount);
+
+        const countCharsLength = pageCount.toString().length;
+        const inputWidth = `${2 + countCharsLength}em`;
+        this.$.input.style.width = inputWidth;
+        this.$.input.maxlength = countCharsLength;
+
+        if (this.currentPage > pageCount) {
+          this.currentPage = 1;
+        }
+      }
+
+      _validateParams(currentPage, pageCount) {
+        this._ensurePositiveInteger(currentPage, "currentPage");
+        this._ensurePositiveInteger(pageCount, "pageCount");
+      }
+
+      _ensurePositiveInteger(value, paramName) {
+        if (typeof value !== "number" || value <= 0 || Math.trunc(value) != value) {
+          this.style.visibility = "hidden";
+          throw new Error(`[pagination-input] Invalid value for ${paramName}. Need to be an positive integer`);
+        }
+      }
+    }
+
+    window.customElements.define(KlmPagination.is, KlmPagination);
+  </script>
+</dom-module>
