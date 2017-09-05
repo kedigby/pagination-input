@@ -1,33 +1,26 @@
 # \<pagination-input\>
 
-`pagination-input` is a simple pagination control with an paper-input.
+`pagination-input` is a simple pagination control with an paper-input for Polymer.
 
-<!--
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/cforgeard/pagination-input)
+
+<!---
 ```
 <custom-element-demo>
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="pagination-input.html">
-    <next-code-block>
-        <demo-snippet>
-            <template>
-                <pagination-input current-page="1" page-count="5"></pagination-input>
-            </template>
-        </demo-snippet>
-        <demo-snippet>
-            <template>
-                <pagination-input current-page="99" page-count="155"></pagination-input>
-            </template>
-        </demo-snippet>
-    </next-code-block>
+    <style>*{font-family:"Source Sans Pro",Roboto,sans-serif;}</style>
+    <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
 ```
 -->
 ```html
+<h3>Demo with some pages</h3>
 <pagination-input current-page="1" page-count="5"></pagination-input>
+<br>
+<h3>Demo with a lot of pages</h3>
 <pagination-input current-page="99" page-count="155"></pagination-input>
 ```
 
@@ -36,3 +29,8 @@
 ```
 bower install pagination-input
 ```
+
+## Credits and licence
+
+MIT Licence
+@ FORGEARD Clément 2017
