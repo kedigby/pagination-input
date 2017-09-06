@@ -9,11 +9,11 @@
     "page"
   ],
   "authors": [
-    "clement2e"
+    "cforgeard"
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/clement2e/pagination-input.git"
+    "url": "git://github.com/cforgeard/pagination-input.git"
   },
   "licence": "MIT",
   "dependencies": {
