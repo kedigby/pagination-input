@@ -151,7 +151,7 @@ Custom property | Description | Default
         this._validateParams(this.currentPage, pageCount);
 
         const countCharsLength = pageCount.toString().length;
-        const inputWidth = `${countCharsLength}em`;
+        const inputWidth = `${2+countCharsLength}em`;
         this.$.input.style.width = inputWidth;
         this.$.input.maxlength = countCharsLength;
 
