@@ -31,7 +31,7 @@ Custom property | Description | Default
 <dom-module id="pagination-input">
   <template strip-whitespace>
     <style>
-       :host {
+      :host {
         @apply --layout-horizontal;
         @apply --layout-center;
       }
@@ -70,7 +70,7 @@ Custom property | Description | Default
     <paper-icon-button icon="icons:chevron-left" on-click="_onPreviousPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage)]]"></paper-icon-button>
     <paper-input id="input" type="number" on-change="_onInputValueChange" no-label-float="true" min="1" max$="[[pageCount]]" auto-validate allowed-pattern="[0-9]">
     </paper-input>
-    <div id="suffix">/[[pageCount]]</div>        
+    <div id="suffix">/[[pageCount]]</div>
     <paper-icon-button icon="icons:chevron-right" on-click="_onNextPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount)]]"></paper-icon-button>
     <paper-icon-button icon="icons:last-page" on-click="_onLastPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount)]]"></paper-icon-button>
 
@@ -142,8 +142,10 @@ Custom property | Description | Default
 
         if (currentPage < 1 || currentPage > this.pageCount) {
           this.currentPage = 1;
-        } else {
+        }
+        else {
           this.$.input.value = currentPage;
+          this.dispatchEvent(new CustomEvent('pageChange', { detail: { page: currentPage } }));
         }
       }
 
@@ -151,7 +153,7 @@ Custom property | Description | Default
         this._validateParams(this.currentPage, pageCount);
 
         const countCharsLength = pageCount.toString().length;
-        const inputWidth = `${2+countCharsLength}em`;
+        const inputWidth = `${2 + countCharsLength}em`;
         this.$.input.style.width = inputWidth;
         this.$.input.maxlength = countCharsLength;
 
