@@ -67,15 +67,15 @@ Custom property | Description | Default
       }
     </style>
 
-    <juicy-select value="{{pageSize}}" options="[[pageSizes]]" text-property="Name" value-property="Value" selected-property="Selected">
+    <juicy-select value="{{pageSize}}" options="[[pageSizes]]" text-property="Name" value-property="Value" selected-property="Selected" disabled$="[[loading]]">
     </juicy-select>
-    <paper-icon-button icon="icons:first-page" on-click="_onFirstPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage)]]"></paper-icon-button>
-    <paper-icon-button icon="icons:chevron-left" on-click="_onPreviousPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage)]]"></paper-icon-button>
+    <paper-icon-button icon="icons:first-page" on-click="_onFirstPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage,loading)]]"></paper-icon-button>
+    <paper-icon-button icon="icons:chevron-left" on-click="_onPreviousPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage,loading)]]"></paper-icon-button>
     <paper-input id="input" type="number" on-change="_onInputValueChange" no-label-float="true" min="1" max$="[[pageCount]]" auto-validate allowed-pattern="[0-9]">
     </paper-input>
     <div id="suffix">/[[pageCount]]</div>
-    <paper-icon-button icon="icons:chevron-right" on-click="_onNextPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount)]]"></paper-icon-button>
-    <paper-icon-button icon="icons:last-page" on-click="_onLastPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount)]]"></paper-icon-button>
+    <paper-icon-button icon="icons:chevron-right" on-click="_onNextPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount,loading)]]"></paper-icon-button>
+    <paper-icon-button icon="icons:last-page" on-click="_onLastPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount,loading)]]"></paper-icon-button>
 
   </template>
 
@@ -104,6 +104,10 @@ Custom property | Description | Default
           pageSizes: {
             type: Array
           },
+          loading: {
+            type: Boolean,
+            notify: true
+          },
         }
       }
 
@@ -121,11 +125,13 @@ Custom property | Description | Default
         }
       }
 
-      _shouldDisablePreviousPageBtns(currentPage) {
+      _shouldDisablePreviousPageBtns(currentPage,loading) {
+        if (loading) return loading;
         return currentPage === 1;
       }
 
-      _shouldDisableNextPageBtns(currentPage, pageCount) {
+      _shouldDisableNextPageBtns(currentPage, pageCount,loading) {        
+        if (loading) return loading;
         return currentPage === pageCount;
       }
 
