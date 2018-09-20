@@ -125,12 +125,12 @@ Custom property | Description | Default
         }
       }
 
-      _shouldDisablePreviousPageBtns(currentPage,loading) {
+      _shouldDisablePreviousPageBtns(currentPage, loading) {
         if (loading) return loading;
         return currentPage === 1;
       }
 
-      _shouldDisableNextPageBtns(currentPage, pageCount,loading) {        
+      _shouldDisableNextPageBtns(currentPage, pageCount, loading) {        
         if (loading) return loading;
         return currentPage === pageCount;
       }
