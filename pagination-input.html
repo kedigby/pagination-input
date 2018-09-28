@@ -71,7 +71,7 @@ Custom property | Description | Default
     </juicy-select>
     <paper-icon-button icon="icons:first-page" on-click="_onFirstPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage,loading)]]"></paper-icon-button>
     <paper-icon-button icon="icons:chevron-left" on-click="_onPreviousPageBtnClick" disabled$="[[_shouldDisablePreviousPageBtns(currentPage,loading)]]"></paper-icon-button>
-    <paper-input id="input" type="number" on-change="_onInputValueChange" no-label-float="true" min="1" max$="[[pageCount]]" auto-validate allowed-pattern="[0-9]" disabled$="[[loading]]" />
+    <paper-input id="input" type="number" on-change="_onInputValueChange" no-label-float="true" min="1" max$="[[pageCount]]" auto-validate allowed-pattern="[0-9]" disabled$="[[loading]]"></paper-input>
     <div id="suffix">/[[pageCount]]</div>
     <paper-icon-button icon="icons:chevron-right" on-click="_onNextPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount,loading)]]"></paper-icon-button>
     <paper-icon-button icon="icons:last-page" on-click="_onLastPageBtnClick" disabled$="[[_shouldDisableNextPageBtns(currentPage,pageCount,loading)]]"></paper-icon-button>
